@@ -1,9 +1,9 @@
-import React, { FormEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { FormEventHandler, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
-  const [userName, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [userName, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
@@ -18,10 +18,10 @@ export const Login = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    if (userName === "admin" && password === "admin") {
+    if (userName === 'admin' && password === 'admin') {
       setIsSuccess(true);
       setIsError(false);
-      navigate("/welcome/" + userName);
+      navigate('/welcome/' + userName);
     } else {
       setIsSuccess(false);
       setIsError(true);

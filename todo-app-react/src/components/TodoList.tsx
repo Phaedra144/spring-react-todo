@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react';
 
 export const TodoList = () => {
   const todos = [
     {
       id: 1,
-      description: "Learn React",
+      description: 'Learn React',
       isCompleted: false,
       targetDate: new Date(),
     },
     {
       id: 2,
-      description: "Learn AWS",
+      description: 'Learn AWS',
       isCompleted: false,
       targetDate: new Date(),
     },
     {
       id: 3,
-      description: "Learn BigData",
+      description: 'Learn BigData',
       isCompleted: false,
       targetDate: new Date(),
     },
@@ -39,7 +39,7 @@ export const TodoList = () => {
               <tr key={todo.id}>
                 <td>{todo.id}</td>
                 <td>{todo.description}</td>
-                <td>{todo.isCompleted ? "Yes" : "No"}</td>
+                <td>{todo.isCompleted ? 'Yes' : 'No'}</td>
                 <td>{todo.targetDate.toDateString()}</td>
               </tr>
             ))}

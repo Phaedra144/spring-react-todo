@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
 
 export const Welcome = () => {
   const params = useParams();
