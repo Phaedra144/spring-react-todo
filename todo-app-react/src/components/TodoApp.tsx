@@ -1,10 +1,14 @@
 import React from "react";
-import { Login } from "./Login";
+import { Footer } from "./Footer.tsx";
+import { Header } from "./Header.tsx";
+import { Outlet } from "react-router-dom";
 
 export function TodoApp() {
   return (
     <div>
-      <Login />
+      <Header />
+      <Outlet />
+      <Footer />
     </div>
   );
 }
