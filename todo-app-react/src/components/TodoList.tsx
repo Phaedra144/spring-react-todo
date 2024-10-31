@@ -22,10 +22,10 @@ export const TodoList = () => {
     },
   ];
   return (
-    <div className="d-flex flex-column align-content-around flex-wrap">
+    <div className="container">
       <h1>Todo List</h1>
       <div>
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Id</th>
