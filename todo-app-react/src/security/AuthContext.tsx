@@ -5,6 +5,7 @@ export const AuthContext = createContext({
   logout: () => {},
   login: (userName: string, password: string) => {},
   isError: false,
+  userName: '',
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -16,6 +17,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [userName, setUserName] = useState('');
 
   const logout = () => {
     setIsError(false);
@@ -25,6 +27,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const login = (userName: string, password: string) => {
     if (userName === 'admin' && password === 'admin') {
       setIsAuthenticated(true);
+      setUserName(userName);
       return true;
     } else {
       setIsAuthenticated(false);
@@ -38,6 +41,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     login,
     isError,
+    userName,
   };
   return (
     <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>
