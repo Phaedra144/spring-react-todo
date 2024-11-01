@@ -8,6 +8,7 @@ import { TodoList } from './components/TodoList.tsx';
 import { Welcome } from './components/Welcome.tsx';
 import './index.css';
 import { AuthProvider } from './security/AuthContext.tsx';
+import { AuthenticatedRoute } from './security/AuthenticatedRoute.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/logout',
-        element: <Logout />,
+        element: (
+          <AuthenticatedRoute>
+            <Logout />
+          </AuthenticatedRoute>
+        ),
       },
       {
         path: '/login',
@@ -27,11 +32,19 @@ const router = createBrowserRouter([
       },
       {
         path: '/welcome/:userName?',
-        element: <Welcome />,
+        element: (
+          <AuthenticatedRoute>
+            <Welcome />
+          </AuthenticatedRoute>
+        ),
       },
       {
         path: '/todos',
-        element: <TodoList />,
+        element: (
+          <AuthenticatedRoute>
+            <TodoList />
+          </AuthenticatedRoute>
+        ),
       },
       {
         path: '*',

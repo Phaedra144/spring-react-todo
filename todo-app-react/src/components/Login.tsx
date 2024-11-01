@@ -1,12 +1,10 @@
 import React, { FormEventHandler, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../security/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
   const authContext = useAuth();
 
@@ -20,26 +18,14 @@ export const Login = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    if (userName === 'admin' && password === 'admin') {
-      authContext.setIsAuthenticated(true);
-      setIsSuccess(true);
-      setIsError(false);
+    if (authContext.login(userName, password)) {
       navigate('/welcome/' + userName);
-    } else {
-      authContext.setIsAuthenticated(false);
-      setIsSuccess(false);
-      setIsError(true);
     }
   };
 
   return (
     <div>
-      {isSuccess && (
-        <>
-          <div className="successMessage">Authentication was successful</div>
-        </>
-      )}
-      {isError && (
+      {authContext.isError && (
         <div className="errorMessage">
           Authentication failed, please check your credentials
         </div>
