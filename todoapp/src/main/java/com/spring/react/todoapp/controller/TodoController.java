@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.react.todoapp.dtos.TodoDto;
 import com.spring.react.todoapp.service.TodoService;
 
-@RestController
+@RestController("/api/v1")
 public class TodoController {
 
   TodoService todoService;
@@ -19,8 +19,8 @@ public class TodoController {
   }
 
   @GetMapping("users/{userName}/todos")
-    public List<TodoDto> getAllTodos(@PathVariable String userName) {
-        return todoService.findAllByUsername(userName);
-    }
+  public List<TodoDto> getAllTodos(@PathVariable String userName) {
+    return todoService.findAllByUsername(userName);
+  }
 
 }

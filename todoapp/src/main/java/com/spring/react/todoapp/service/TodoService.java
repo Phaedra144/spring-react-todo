@@ -15,9 +15,9 @@ public class TodoService {
   private static List<TodoDto> todos = new ArrayList<>();
 
   static {
-    todos.add(new TodoDto("Learn AWS", false, LocalDate.now().plusDays(3), "user1"));
-    todos.add(new TodoDto("Learn Spring Boot", false, LocalDate.now().plusDays(10), "user1"));
-    todos.add(new TodoDto("Learn React", false, LocalDate.now().plusDays(15), "user2"));
+    todos.add(new TodoDto(1, "Learn AWS", false, LocalDate.now().plusDays(3), "user1"));
+    todos.add(new TodoDto(2, "Learn Spring Boot", false, LocalDate.now().plusDays(10), "user1"));
+    todos.add(new TodoDto(3, "Learn React", false, LocalDate.now().plusDays(15), "user2"));
   }
 
   public List<TodoDto> findAllByUsername(String username) {
@@ -26,7 +26,7 @@ public class TodoService {
   }
 
   public TodoDto addTodo(String username, String description, LocalDate targetDate, boolean done) {
-    TodoDto todo = new TodoDto(description, done, targetDate, username);
+    TodoDto todo = new TodoDto(4, description, done, targetDate, username);
     todos.add(todo);
     return todo;
   }
