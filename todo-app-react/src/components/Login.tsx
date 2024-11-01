@@ -1,5 +1,6 @@
 import React, { FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../security/AuthContext';
 
 export const Login = () => {
   const [userName, setUsername] = useState('');
@@ -7,6 +8,7 @@ export const Login = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
+  const authContext = useAuth();
 
   const handleChangeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -19,10 +21,12 @@ export const Login = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     if (userName === 'admin' && password === 'admin') {
+      authContext.setIsAuthenticated(true);
       setIsSuccess(true);
       setIsError(false);
       navigate('/welcome/' + userName);
     } else {
+      authContext.setIsAuthenticated(false);
       setIsSuccess(false);
       setIsError(true);
     }

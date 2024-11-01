@@ -7,6 +7,7 @@ import { TodoApp } from './components/TodoApp.tsx';
 import { TodoList } from './components/TodoList.tsx';
 import { Welcome } from './components/Welcome.tsx';
 import './index.css';
+import { AuthProvider } from './security/AuthContext.tsx';
 
 const router = createBrowserRouter([
   {
@@ -42,9 +43,9 @@ const router = createBrowserRouter([
 
 export function App() {
   return (
-    <>
+    <AuthProvider>
       <RouterProvider router={router} />
-    </>
+    </AuthProvider>
   );
 }
 
