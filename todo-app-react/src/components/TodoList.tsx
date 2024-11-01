@@ -1,26 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getTodos } from '../api/TodoApiService';
+import { Todo } from '../types/TodoTypes';
 
 export const TodoList = () => {
-  const todos = [
-    {
-      id: 1,
-      description: 'Learn React',
-      isCompleted: false,
-      targetDate: new Date(),
-    },
-    {
-      id: 2,
-      description: 'Learn AWS',
-      isCompleted: false,
-      targetDate: new Date(),
-    },
-    {
-      id: 3,
-      description: 'Learn BigData',
-      isCompleted: false,
-      targetDate: new Date(),
-    },
-  ];
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    refreshTodos();
+  }, []);
+
+  const refreshTodos = () => {
+    getTodos('user1')
+      .then((response) => {
+        setTodos(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div className="container">
       <h1>Todo List</h1>
@@ -40,7 +37,7 @@ export const TodoList = () => {
                 <td>{todo.id}</td>
                 <td>{todo.description}</td>
                 <td>{todo.isCompleted ? 'Yes' : 'No'}</td>
-                <td>{todo.targetDate.toDateString()}</td>
+                <td>{todo.targetDate.toString()}</td>
               </tr>
             ))}
           </tbody>
