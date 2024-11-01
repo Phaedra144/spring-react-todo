@@ -31,16 +31,16 @@ public class TodoService {
     return todo;
   }
 
-  // public void deleteById(int id) {
-  //   Predicate<? super TodoDto> predicate = todo -> todo.getId() == id;
-  //   todos.removeIf(predicate);
-  // }
+  public void deleteById(int id) {
+    Predicate<? super TodoDto> predicate = todo -> todo.id() == id;
+    todos.removeIf(predicate);
+  }
 
-  // public TodoDto findById(int id) {
-  //   Predicate<? super TodoDto> predicate = todo -> todo.getId() == id;
-  //   TodoDto todo = todos.stream().filter(predicate).findFirst().get();
-  //   return todo;
-  // }
+  public TodoDto findById(int id) {
+    Predicate<? super TodoDto> predicate = todo -> todo.id() == id;
+    TodoDto todo = todos.stream().filter(predicate).findFirst().get();
+    return todo;
+  }
 
   // public void updateTodo(TodoDto todo) {
   //   deleteById(todo.getId());
