@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { deleteTodoById, getTodos } from '../api/TodoApiService';
 import { useAuth } from '../security/AuthContext';
 import { Todo } from '../types/TodoTypes';
+import { useNavigate } from 'react-router-dom';
 
 export const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const authContext = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     refreshTodos();
   }, []);
 
   const refreshTodos = () => {
-    getTodos(authContext.userName)
+    getTodos('admin')
       .then((response) => {
         setTodos(response.data);
       })
@@ -22,7 +24,7 @@ export const TodoList = () => {
   };
 
   const deleteTodo = (id: number) => {
-    deleteTodoById(authContext.userName, id)
+    deleteTodoById('admin', id)
       .then(() => {
         refreshTodos();
       })
@@ -30,6 +32,11 @@ export const TodoList = () => {
         console.log(error);
       });
   };
+
+  const updateTodo = (id: number) => {
+    navigate(`/todos/${id}`);
+  };
+
   return (
     <div className="container">
       <h1>Todo List</h1>
@@ -61,7 +68,9 @@ export const TodoList = () => {
                   </button>
                 </td>
                 <td>
-                  <button className="btn btn-success">Update</button>
+                  <button className="btn btn-success" onClick={
+                    () => updateTodo(todo.id)
+                  }>Update</button>
                 </td>
               </tr>
             ))}

@@ -9,6 +9,7 @@ import { Welcome } from './components/Welcome.tsx';
 import './index.css';
 import { AuthProvider } from './security/AuthContext.tsx';
 import { AuthenticatedRoute } from './security/AuthenticatedRoute.tsx';
+import { Todo } from './components/Todo.tsx';
 
 const router = createBrowserRouter([
   {
@@ -40,11 +41,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/todos',
-        element: (
-          <AuthenticatedRoute>
-            <TodoList />
-          </AuthenticatedRoute>
-        ),
+        element: <TodoList />,
+      },
+      {
+        path: '/todos/:id',
+        element: <Todo />,
       },
       {
         path: '*',
