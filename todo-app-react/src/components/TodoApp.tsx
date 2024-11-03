@@ -5,10 +5,12 @@ import { Header } from './Header.tsx';
 
 export function TodoApp() {
   return (
-    <div>
+    <>
       <Header />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
-    </div>
+    </>
   );
 }
