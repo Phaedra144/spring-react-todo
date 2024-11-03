@@ -1,40 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { getTodoById } from '../api/TodoApiService';
 import { useAuth } from '../security/AuthContext';
-import { Todo as TodoType } from '../types/TodoTypes';
-
-interface FormInputsType {
-  description: string;
-  isCompleted: boolean;
-  targetDate: string;
-}
 
 export const Todo = () => {
   const { id } = useParams();
   const authContext = useAuth();
-  const [todo, setTodo] = useState<TodoType>({
-    id: 0,
+
+  const initialValues = {
     description: '',
     isCompleted: false,
-    targetDate: new Date(),
-  });
-  const initialValues = {
-    description: todo.description,
-    isCompleted: todo.isCompleted,
-    targetDate: todo.targetDate.toString(),
+    targetDate: new Date().toISOString().slice(0, 10),
   };
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-    control,
-  } = useForm<FormInputsType>({
+    reset,
+  } = useForm({
     mode: 'onTouched',
-    reValidateMode: "onChange",
+    reValidateMode: 'onChange',
     defaultValues: initialValues,
   });
 
@@ -48,7 +36,11 @@ export const Todo = () => {
     if (id) {
       getTodoById('admin', parseInt(id))
         .then((response) => {
-          setTodo(response.data);
+          reset({
+            description: response.data.description,
+            isCompleted: response.data.isCompleted,
+            targetDate: response.data.targetDate,
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -66,11 +58,8 @@ export const Todo = () => {
           </Col>
           <Col className="col-sm-10">
             <Form.Control
-              className={
-                (errors.description ? 'is-invalid' : '')
-              }
+              className={errors.description ? 'is-invalid' : ''}
               type="text"
-              defaultValue={todo.description}
               {...register('description', {
                 required: 'Description is required',
               })}
