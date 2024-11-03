@@ -21,13 +21,13 @@ public class TodoService {
     todos.add(new TodoDto(4, "Learn React", false, LocalDate.now().plusDays(15), "user2"));
   }
 
-  public List<TodoDto> findAllByUsername(String username) {
-    Predicate<? super TodoDto> predicate = todo -> todo.userName().equalsIgnoreCase(username);
+  public List<TodoDto> findAllByUsername(String userName) {
+    Predicate<? super TodoDto> predicate = todo -> todo.userName().equalsIgnoreCase(userName);
     return todos.stream().filter(predicate).toList();
   }
 
-  public TodoDto addTodo(String username, String description, LocalDate targetDate, boolean done) {
-    TodoDto todo = new TodoDto(5, description, done, targetDate, username);
+  public TodoDto addTodo(String userName, String description, LocalDate targetDate, boolean done) {
+    TodoDto todo = new TodoDto(5, description, done, targetDate, userName);
     todos.add(todo);
     return todo;
   }
@@ -43,8 +43,8 @@ public class TodoService {
     return todo;
   }
 
-  // public void updateTodo(TodoDto todo) {
-  //   deleteById(todo.getId());
-  //   todos.add(todo);
-  // }
+  public void updateTodo(TodoDto todo) {
+    deleteById(todo.id());
+    todos.add(todo);
+  }
 }

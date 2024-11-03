@@ -11,7 +11,7 @@ export const TodoList = () => {
 
   useEffect(() => {
     refreshTodos();
-  }, []);
+  }, [todos]);
 
   const refreshTodos = () => {
     getTodos('admin')

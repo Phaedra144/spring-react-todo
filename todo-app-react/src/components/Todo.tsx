@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { getTodoById } from '../api/TodoApiService';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getTodoById, updateTodoById } from '../api/TodoApiService';
 import { useAuth } from '../security/AuthContext';
 
 export const Todo = () => {
   const { id } = useParams();
   const authContext = useAuth();
+  const navigate = useNavigate();
 
   const initialValues = {
     description: '',
@@ -26,7 +27,15 @@ export const Todo = () => {
     defaultValues: initialValues,
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    data = {
+      ...data,
+      id: id,
+      userName: 'admin',
+    };
+    updateTodoById('admin', data);
+    navigate('/todos');
+  };
 
   useEffect(() => {
     retrieveTodo();
