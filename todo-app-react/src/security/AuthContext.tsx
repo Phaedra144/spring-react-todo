@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { executeBasicAuthentication } from '../api/TodoApiService';
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -33,15 +34,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const login = (userName: string, password: string) => {
-    if (userName === 'admin' && password === 'admin') {
-      setIsAuthenticated(true);
-      setUserName(userName);
-      return true;
-    } else {
-      setIsAuthenticated(false);
-      setIsError(true);
-      return false;
-    }
+
+    const baToken = 'Basic ' + window.btoa(userName + ':' + password);
+
+    executeBasicAuthentication(baToken)
+    .then((response) => {
+        setIsAuthenticated(true);
+        return true;
+      })
+      .catch((error) => {
+        setIsAuthenticated(false);
+        setIsError(true);
+        return false;
+      });
+
+    // if (userName === 'admin' && password === 'admin') {
+    //   setIsAuthenticated(true);
+    //   setUserName(userName);
+    //   return true;
+    // } else {
+    //   setIsAuthenticated(false);
+    //   setIsError(true);
+    //   return false;
+    // }
   };
 
   const authData = {

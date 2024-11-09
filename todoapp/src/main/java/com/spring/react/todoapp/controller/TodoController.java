@@ -26,6 +26,11 @@ public class TodoController {
     this.todoService = todoService;
   }
 
+  @GetMapping("/basicauth")
+  public String getBasicAuthentication() {
+    return "Success";
+  }
+
   @GetMapping("users/{userName}/todos")
   public List<TodoDto> getAllTodos(@PathVariable String userName) {
     return todoService.findAllByUsername(userName);
