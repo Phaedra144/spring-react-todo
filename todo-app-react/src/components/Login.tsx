@@ -16,9 +16,9 @@ export const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    if (await authContext.login(userName, password)) {
+    if (authContext.login(userName, password)) {
       navigate('/welcome/' + userName);
     }
   };

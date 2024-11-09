@@ -27,32 +27,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isError, setIsError] = useState(false);
   const [userName, setUserName] = useState('');
+  const [token, setToken] = useState('');
 
   const logout = () => {
     setIsError(false);
     setIsAuthenticated(false);
   };
 
-  const login = async (userName: string, password: string) => {
+  const login = (userName: string, password: string): boolean => {
     const baToken = 'Basic ' + window.btoa(userName + ':' + password);
 
-    try {
-      const response = await executeBasicAuthentication(baToken);
-
-      if (response.status === 200) {
-        setIsAuthenticated(true);
-        setUserName(userName);
-        return true;
-      } else {
+    executeBasicAuthentication(baToken)
+      .then((response) => {
+        if (response.status === 200) {
+          setIsAuthenticated(true);
+          setUserName(userName);
+          setToken(baToken);
+        } else {
+          setIsAuthenticated(false);
+          setIsError(true);
+        }
+      })
+      .catch((error) => {
         setIsAuthenticated(false);
         setIsError(true);
-        return false;
-      }
-    } catch (error) {
-      setIsAuthenticated(false);
-      setIsError(true);
-      return false;
-    }
+      });
+
+    return true;
   };
 
   const authData: AuthContextType = {
