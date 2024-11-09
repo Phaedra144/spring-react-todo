@@ -1,6 +1,6 @@
 import React, { FormEventHandler, useState } from 'react';
-import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../security/AuthContext';
 
 export const Login = () => {
   const [userName, setUsername] = useState('');
@@ -16,9 +16,9 @@ export const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
-    if (authContext.login(userName, password)) {
+    if (await authContext.login(userName, password)) {
       navigate('/welcome/' + userName);
     }
   };
