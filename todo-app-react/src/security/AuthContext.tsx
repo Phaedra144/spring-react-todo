@@ -1,18 +1,11 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { apiClient } from '../api/ApiClient';
 import { executeBasicAuthentication } from '../api/TodoApiService';
 
-type AuthContextType = {
-  isAuthenticated: boolean;
-  logout: () => void;
-  login: (userName: string, password: string) => boolean;
-  isError: boolean;
-  userName: string;
-};
-
-export const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext({
   isAuthenticated: false,
   logout: () => {},
-  login: (userName: string, password: string) => false,
+  login: (userName: string, password: string) => Promise<boolean>,
   isError: false,
   userName: '',
 });
@@ -26,7 +19,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState<string | null>(null);
   const [token, setToken] = useState('');
 
   const logout = () => {
@@ -34,29 +27,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsAuthenticated(false);
   };
 
-  const login = (userName: string, password: string): boolean => {
+  const login = async (
+    userName: string,
+    password: string
+  ): Promise<boolean> => {
     const baToken = 'Basic ' + window.btoa(userName + ':' + password);
 
-    executeBasicAuthentication(baToken)
-      .then((response) => {
-        if (response.status === 200) {
-          setIsAuthenticated(true);
-          setUserName(userName);
-          setToken(baToken);
-        } else {
-          setIsAuthenticated(false);
-          setIsError(true);
-        }
-      })
-      .catch((error) => {
-        setIsAuthenticated(false);
-        setIsError(true);
-      });
+    try {
+      const response = await executeBasicAuthentication(baToken);
 
-    return true;
+      if (response.status === 200) {
+        setIsAuthenticated(true);
+        setUserName(userName);
+        setToken(baToken);
+        apiClient.interceptors.request.use((config) => {
+          config.headers.Authorization = baToken;
+          return config;
+        });
+        return true;
+      } else {
+        setIsAuthenticated(false);
+        setUserName(null);
+        setIsError(true);
+        return false;
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+      setIsError(true);
+      return false;
+    }
   };
 
-  const authData: AuthContextType = {
+  const authData = {
     isAuthenticated,
     logout,
     login,
