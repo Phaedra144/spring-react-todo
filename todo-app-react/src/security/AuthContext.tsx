@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { apiClient } from '../api/ApiClient';
-import { executeBasicAuthentication } from '../api/TodoApiService';
+import { executeJwtAuthenticationService } from '../api/AuthenticationApiService';
 
 export const AuthContext = createContext({
   isAuthenticated: false,
@@ -24,33 +24,64 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = () => {
     setIsError(false);
     setIsAuthenticated(false);
+    setUserName(null);
   };
+
+  // const login = async (
+  //   userName: string,
+  //   password: string
+  // ): Promise<boolean> => {
+  //   const baToken = 'Basic ' + window.btoa(userName + ':' + password);
+
+  //   try {
+  //     const response = await executeBasicAuthentication(baToken);
+
+  //     if (response.status === 200) {
+  //       setIsAuthenticated(true);
+  //       setUserName(userName);
+  //       apiClient.interceptors.request.use((config) => {
+  //         config.headers.Authorization = baToken;
+  //         return config;
+  //       });
+  //       return true;
+  //     } else {
+  //       logout();
+  //       setIsError(true);
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     logout();
+  //     setIsError(true);
+  //     return false;
+  //   }
+  // };
 
   const login = async (
     userName: string,
     password: string
   ): Promise<boolean> => {
-    const baToken = 'Basic ' + window.btoa(userName + ':' + password);
-
     try {
-      const response = await executeBasicAuthentication(baToken);
+      const response = await executeJwtAuthenticationService(
+        userName,
+        password
+      );
 
       if (response.status === 200) {
+        const jwtToken = 'Bearer ' + response.data.token;
         setIsAuthenticated(true);
         setUserName(userName);
         apiClient.interceptors.request.use((config) => {
-          config.headers.Authorization = baToken;
+          config.headers.Authorization = jwtToken;
           return config;
         });
         return true;
       } else {
-        setIsAuthenticated(false);
-        setUserName(null);
+        logout();
         setIsError(true);
         return false;
       }
     } catch (error) {
-      setIsAuthenticated(false);
+      logout();
       setIsError(true);
       return false;
     }
@@ -61,7 +92,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     login,
     isError,
-    userName,
+    userName: userName || '',
   };
 
   return (

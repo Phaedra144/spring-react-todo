@@ -16,11 +16,3 @@ export const deleteTodoById = (userName: string, todoId: number) => {
 export const updateTodoById = (userName: string, todo: Todo) => {
   return apiClient.put(`/users/${userName}/todos/${todo.id}`, todo);
 };
-
-export const executeBasicAuthentication = (token: string) => {
-  return apiClient.get(`/basicauth`, {
-    headers: {
-      Authorization: token,
-    },
-  });
-};
