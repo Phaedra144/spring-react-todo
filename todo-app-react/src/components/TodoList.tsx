@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const authContext = useAuth();
+  const userName = authContext.userName;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,7 +15,7 @@ export const TodoList = () => {
   }, []);
 
   const refreshTodos = () => {
-    getTodos('admin')
+    getTodos(userName)
       .then((response) => {
         setTodos(response.data);
       })
@@ -24,7 +25,7 @@ export const TodoList = () => {
   };
 
   const deleteTodo = (id: number) => {
-    deleteTodoById('admin', id)
+    deleteTodoById(userName, id)
       .then(() => {
         refreshTodos();
       })
