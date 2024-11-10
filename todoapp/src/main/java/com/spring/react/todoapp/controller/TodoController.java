@@ -2,6 +2,7 @@ package com.spring.react.todoapp.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +29,14 @@ public class TodoController {
   }
 
   @GetMapping("/basicauth")
-  public String getBasicAuthentication() {
-    return "Success";
+  public ResponseEntity<String> getBasicAuthentication(@RequestHeader HttpHeaders headers) {
+    if (headers.containsKey(HttpHeaders.AUTHORIZATION)) {
+      String authorizationHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
+      if (authorizationHeader.startsWith("Basic ")) {
+        return new ResponseEntity<>("Authentication passed", HttpStatus.OK);
+      }
+    }
+    return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
   }
 
   @GetMapping("users/{userName}/todos")

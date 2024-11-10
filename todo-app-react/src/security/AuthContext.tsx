@@ -20,7 +20,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isError, setIsError] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
-  const [token, setToken] = useState('');
 
   const logout = () => {
     setIsError(false);
@@ -39,7 +38,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (response.status === 200) {
         setIsAuthenticated(true);
         setUserName(userName);
-        setToken(baToken);
         apiClient.interceptors.request.use((config) => {
           config.headers.Authorization = baToken;
           return config;
