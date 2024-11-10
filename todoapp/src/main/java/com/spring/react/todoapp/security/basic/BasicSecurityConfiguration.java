@@ -1,4 +1,4 @@
-package com.spring.react.todoapp.security;
+package com.spring.react.todoapp.security.basic;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+// @Configuration
 public class BasicSecurityConfiguration {
 
   // Filter chain
